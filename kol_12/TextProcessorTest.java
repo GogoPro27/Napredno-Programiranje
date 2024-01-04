@@ -1,8 +1,10 @@
 package SecondPartialExcercises.kol_12;
+//zeznata
 
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 class CosineSimilarityCalculator {
@@ -51,72 +53,108 @@ public class TextProcessorTest {
     }
 }
 class TextProcessor{
-//    private Set<String>wordsSet;
-//    private List<Text> texts;
-    private Map<Text,List<Integer>>textToVector;
+public List<Sentence> sentences;
     public TextProcessor() {
-        textToVector = new HashMap<>();
+        sentences = new ArrayList<>();
     }
     public void readText (InputStream is){
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        List<String> inputs= Text.filterText(br.lines());
+        List<String> inputs= br.lines().collect(Collectors.toList());
         Set<String>wordsSet = new TreeSet<>();
         for (String input : inputs) {
-            textToVector.put(new Text(input),new ArrayList<>());
-            List<String> words = Text.getWords(input);
+            List<String> words = TextPotter.getWords(TextPotter.filterText(input));
             wordsSet.addAll(words);
         }
-        textToVector.keySet()
-                .forEach(text -> {
-                    List<Integer> occurances=new ArrayList<>();
-                    wordsSet.forEach(word->{
-                        occurances.add(text.occurances(word));
-                    });
-                    textToVector.get(text).addAll(occurances);
-                });
+        for (String input : inputs) {
+            Sentence sentence = new Sentence(input,wordsSet);
+            sentences.add(sentence);
+        }
     }
     public void printTextsVectors (OutputStream os){
-        PrintWriter pw= new PrintWriter(os);
-        textToVector.keySet().stream()
-                        .forEach(key-> System.out.println(textToVector.get(key)));
+        PrintWriter pw = new PrintWriter(os);
+        sentences.forEach(sentence -> pw.println(sentence.getVector()));
         pw.flush();
     }
     public void printCorpus(OutputStream os, int n, boolean ascending){
-
+        PrintWriter pw = new PrintWriter(os);
+        Map<String,Integer> map= sentences.stream()
+                .map(sentence -> sentence.getWordsMap().entrySet())
+                .flatMap(Collection::stream)
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getKey,
+                        Collectors.summingInt(Map.Entry::getValue)
+                ));
+        Comparator<Map.Entry<String, Integer>> comparator = Comparator.<Map.Entry<String, Integer>, Integer>comparing(Map.Entry::getValue, ascending ? Comparator.naturalOrder() : Comparator.reverseOrder())
+                .thenComparing(Map.Entry::getKey);
+            map.entrySet().stream()
+                .sorted(comparator)
+                    .limit(n)
+                    .forEach(entry->pw.println(String.format("%s : %d",entry.getKey(),entry.getValue())));
+        pw.flush();
     }
     public void mostSimilarTexts (OutputStream os){
-
+        PrintWriter pw = new PrintWriter(os);
+        pw.print(mostSimilar());
+        pw.flush();
+    }
+    public String mostSimilar(){
+        String list = sentences.stream()
+                .flatMap(s1 -> sentences.stream().filter(s2 -> !s1.equals(s2))
+                        .map(s2 -> new AbstractMap.SimpleEntry<>(s1, s2)))
+                .min(Comparator.comparingDouble(entry ->
+                        Math.abs(1 - CosineSimilarityCalculator.cosineSimilarity(entry.getKey().getVector(), entry.getValue().getVector()))))
+                .map(entry -> {
+                    Sentence first = entry.getKey();
+                    Sentence second = entry.getValue();
+                    double similarity = CosineSimilarityCalculator.cosineSimilarity(first.getVector(), second.getVector());
+                    return String.format("%s\n%s\n%.10f", first, second, similarity);
+                })
+                .orElse("");
+        return list;
     }
 }
-class Text{
-    private String text;
-    private Map<String,Integer> vector;
-
-    public Text(String text) {
-        this.text = text;
-        vector = new HashMap<>();
-        getWords(text).stream()
-                .forEach(word->vector.put(word,0));
-    }
-    public List<Integer> getWordsSortedByOccurances(boolean ascending){
-        return null;
-    }
-    public int occurances(String word){
-        return (int) getWords(text).stream().filter(w->w.equals(word)).count();
-    }
+class TextPotter{
     public static List<String>getWords(String text){
         return Arrays.stream(text.split("\\s+"))
+                .map(string -> string.toLowerCase())
                 .collect(Collectors.toList());
     }
-    public static List<String> filterText(Stream<String> stream){
-        return  stream.map(string -> {
-            return string.chars().filter(character->{
+    public static String filterText(String s){
+       return s.chars().filter(character->{
                         if (character>='A'&&character<='Z' || character>='a'&&character<='z' || character==' ')
                             return true;
                         return false;
                     }).mapToObj(character->(char)character)
                     .map(Object::toString)
                     .collect(Collectors.joining(""));
-        }).collect(Collectors.toList());
+    }
+}
+class Sentence{
+    private Map<String,Integer> wordsMap;
+    private String sentence;
+
+    public Sentence(String sentence,Set<String> words) {
+        wordsMap = new TreeMap<>();
+        List<String> myWords = TextPotter.getWords(TextPotter.filterText(sentence));
+        for (String myWord : myWords) {
+            wordsMap.computeIfPresent(myWord,(k,v)->++v);
+            wordsMap.putIfAbsent(myWord,1);
+        }
+        for (String word : words) {
+            wordsMap.putIfAbsent(word,0);
+        }
+        this.sentence = sentence;
+    }
+    public List<Integer> getVector(){
+        return wordsMap.values().stream().collect(Collectors.toList());
+    }
+
+    public Map<String, Integer> getWordsMap() {
+        return wordsMap;
+    }
+
+    @Override
+    public String toString() {
+        return sentence;
     }
 }
