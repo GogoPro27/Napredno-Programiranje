@@ -1,9 +1,10 @@
 package SecondPartialExcercises.kol_12;
-//zeznata
 
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 class CosineSimilarityCalculator {
     public static double cosineSimilarity (Collection<Integer> c1, Collection<Integer> c2) {
@@ -96,19 +97,25 @@ public List<Sentence> sentences;
         pw.flush();
     }
     public String mostSimilar(){
-        String list = sentences.stream()
-                .flatMap(s1 -> sentences.stream().filter(s2 -> !s1.equals(s2))
-                        .map(s2 -> new AbstractMap.SimpleEntry<>(s1, s2)))
-                .min(Comparator.comparingDouble(entry ->
-                        Math.abs(1 - CosineSimilarityCalculator.cosineSimilarity(entry.getKey().getVector(), entry.getValue().getVector()))))
-                .map(entry -> {
-                    Sentence first = entry.getKey();
-                    Sentence second = entry.getValue();
-                    double similarity = CosineSimilarityCalculator.cosineSimilarity(first.getVector(), second.getVector());
-                    return String.format("%s\n%s\n%.10f", first, second, similarity);
-                })
-                .orElse("");
-        return list;
+        Sentence first = sentences.get(0);
+        Sentence second = sentences.get(1);
+        double min = Math.abs(1 - CosineSimilarityCalculator.cosineSimilarity(first.getVector(),second.getVector()));
+        for (int i = 1; i < sentences.size(); i++) {
+            for (int i1 = 0; i1 < sentences.size(); i1++) {
+                if (!sentences.get(i).equals(sentences.get(i1))) {
+                    if (Math.abs(1 - CosineSimilarityCalculator.cosineSimilarity(sentences.get(i).getVector(), sentences.get(i1).getVector())) < min) {
+                        min = Math.abs(1 - CosineSimilarityCalculator.cosineSimilarity(sentences.get(i).getVector(), sentences.get(i1).getVector()));
+                        first = sentences.get(i);
+                        second = sentences.get(i1);
+                    }
+                }
+            }
+        }
+        List<Sentence>list = new ArrayList<>();
+        list.add(first);
+        list.add(second);
+        String s =String.format("%s\n%s\n%.10f",first,second,CosineSimilarityCalculator.cosineSimilarity(first.getVector(),second.getVector()));
+        return s;
     }
 }
 class TextPotter{
