@@ -1,4 +1,4 @@
-package SecondPartialExcercises.kol_17_Observer;
+package SecondPartialExcercises.kol_17_Observer_nedovrsena;
 
 import java.util.ArrayList;
 import java.util.List;

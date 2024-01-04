@@ -1,4 +1,4 @@
-package SecondPartialExcercises.kol_37;
+package SecondPartialExcercises.kol_37_nedovrsena;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
