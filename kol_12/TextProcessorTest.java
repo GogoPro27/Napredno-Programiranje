@@ -4,8 +4,6 @@ package SecondPartialExcercises.kol_12;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 class CosineSimilarityCalculator {
     public static double cosineSimilarity (Collection<Integer> c1, Collection<Integer> c2) {
