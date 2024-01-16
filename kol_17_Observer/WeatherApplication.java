@@ -1,4 +1,4 @@
-package SecondPartialExcercises.kol_17_Observer_nedovrsena;
+package SecondPartialExcercises.kol_17_Observer;
 
 import java.util.*;
 
