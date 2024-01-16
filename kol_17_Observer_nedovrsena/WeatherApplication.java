@@ -1,6 +1,7 @@
 package SecondPartialExcercises.kol_17_Observer_nedovrsena;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -48,15 +49,17 @@ class WeatherDispatcher{
     public WeatherDispatcher() {
         observers = new ArrayList<>();
         pressure =0;
-        temperature = -100;
-        humidity = -100;
+        temperature = 0;
+        humidity = 0;
     }
 
     public void setMeasurements(float temperature, float humidity, float pressure){
         this.temperature = temperature;
         this.humidity = humidity;
         this.pressure = pressure;
+
         notifyObservers();
+        System.out.println();
     }
 
     public void register(IObserver observer) {
@@ -68,7 +71,9 @@ class WeatherDispatcher{
     }
 
     public void notifyObservers() {
-        observers.forEach(IObserver::update);
+        observers.stream()
+                .sorted(Comparator.comparing(IObserver::priority))
+                .forEach(IObserver::update);
     }
 
     public float getTemperature() {
@@ -85,13 +90,18 @@ class WeatherDispatcher{
 }
 interface IObserver{
     void update();
+    int priority();
+
 }
 abstract class Observer implements IObserver{
     protected WeatherDispatcher observed;
 
+
     public Observer(WeatherDispatcher Observed) {
         this.observed = Observed;
+        observed.register(this);
     }
+
 }
 class CurrentConditionsDisplay extends Observer{
     public CurrentConditionsDisplay(WeatherDispatcher observing) {
@@ -103,7 +113,11 @@ class CurrentConditionsDisplay extends Observer{
 //        System.out.println("Updating CurrentConditionsDisplay");
         System.out.println(String.format("Temperature: %.1fF",observed.getTemperature()));
         System.out.println(String.format("Humidity: %.1f%%",observed.getHumidity()));
-        System.out.println();
+    }
+
+    @Override
+    public int priority() {
+        return 0 ;
     }
 }
 class ForecastDisplay extends Observer{
@@ -125,6 +139,11 @@ class ForecastDisplay extends Observer{
             System.out.println("Forecast: Same");
         }
         lastPressure = observed.getPressure();
-        System.out.println();
     }
+
+    @Override
+    public int priority() {
+        return 1;
+    }
+
 }
