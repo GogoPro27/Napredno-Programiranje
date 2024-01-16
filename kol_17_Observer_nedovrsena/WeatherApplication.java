@@ -1,9 +1,6 @@
 package SecondPartialExcercises.kol_17_Observer_nedovrsena;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class WeatherApplication {
 
@@ -41,13 +38,13 @@ public class WeatherApplication {
 
 
 class WeatherDispatcher{
-    private List<IObserver> observers;
+    private Set<IObserver> observers;
     private float temperature;
     private float humidity;
     private float pressure;
 
     public WeatherDispatcher() {
-        observers = new ArrayList<>();
+        observers = new TreeSet<>(Comparator.comparing(IObserver::priority));
         pressure =0;
         temperature = 0;
         humidity = 0;
@@ -72,7 +69,6 @@ class WeatherDispatcher{
 
     public void notifyObservers() {
         observers.stream()
-                .sorted(Comparator.comparing(IObserver::priority))
                 .forEach(IObserver::update);
     }
 
