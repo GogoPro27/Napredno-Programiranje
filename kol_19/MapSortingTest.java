@@ -1,8 +1,7 @@
-package SecondPartialExcercises.kol_19_nedovrsena;
-import java.util.*;
-import java.util.stream.Collectors;
+package SecondPartialExcercises.kol_19;
 
-@SuppressWarnings("ALL")
+import java.util.*;
+
 public class MapSortingTest {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -40,13 +39,14 @@ public class MapSortingTest {
     }
 
     //вашиот код овде
-    public static <K, V extends Comparable<V>> SortedSet<Map.Entry<K,V>> entriesSortedByValues(Map<K, V> map){
-        return map.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toCollection(TreeSet::new));
+    public static <T extends Comparable<T>, E extends Comparable<E>> SortedSet<Map.Entry<T, E>>entriesSortedByValues(Map<T, E> map){
+        Comparator<Map.Entry<T,E>> comparator = (a,b)->{
+            if (a.getValue().compareTo(b.getValue())==0)return 1;
+            else return a.getValue().compareTo(b.getValue());
+        };
+        SortedSet<Map.Entry<T, E>> set = new TreeSet<>(comparator.reversed());
+        map.entrySet().forEach(set::add);
+        System.out.println(map);
+        return set;
     }
-//    Да се напише генеричка метода entriesSortedByValues за сортирање на елементи (парови од клуч и вредност)
-//    на една мапа според вредноста во опаѓачки редослед. Доколку постојат две или повеќе исти вредности,
-//    да се задржи редоследот дефиниран во мапата. Сортираните елементи на мапата да бидат да бидат вратени како SortedSet<Map.Entry<, >>.
-
 }
