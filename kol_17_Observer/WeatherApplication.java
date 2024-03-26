@@ -106,7 +106,6 @@ class CurrentConditionsDisplay extends Observer{
 
     @Override
     public void update() {
-//        System.out.println("Updating CurrentConditionsDisplay");
         System.out.println(String.format("Temperature: %.1fF",observed.getTemperature()));
         System.out.println(String.format("Humidity: %.1f%%",observed.getHumidity()));
     }
@@ -126,7 +125,6 @@ class ForecastDisplay extends Observer{
 
     @Override
     public void update() {
-//        System.out.println("Updating ForecastDisplay");
         if (observed.getPressure() > lastPressure){
             System.out.println("Forecast: Improving");
         }else if (observed.getPressure() < lastPressure){
