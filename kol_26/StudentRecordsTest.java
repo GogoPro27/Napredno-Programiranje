@@ -42,33 +42,29 @@ class StudentRecords{
     }
     public void writeTable(OutputStream outputStream){
         PrintWriter pw = new PrintWriter(outputStream);
-        majorToStudentsMap.keySet().stream()
+        majorToStudentsMap.keySet()
                         .forEach(key->{
                             pw.println(key);
-                            majorToStudentsMap.get(key).stream()
+                            majorToStudentsMap.get(key)
                                     .forEach(pw::println);
                         });
         pw.flush();
     }
     public void writeDistribution(OutputStream outputStream){
-        //ima li podobar nacin da se napise metodov?
         PrintWriter pw = new PrintWriter(outputStream);
         Map<String,Map<Integer,Integer>> mapMap = new HashMap<>();
-        majorToStudentsMap.entrySet()
-                        .forEach(stringSetEntry -> {
-                            mapMap.putIfAbsent(stringSetEntry.getKey(),new HashMap<>());
-                            for (int i = 6; i <= 10; i++) {
-                                mapMap.get(stringSetEntry.getKey()).put(i,0);
-                            }
-                            majorToStudentsMap.get(stringSetEntry.getKey()).stream()
-                                    .map(Student::getGrades)
-                                    .flatMap(Collection::stream)
-                                    .forEach(grade->{
-                                        mapMap.get(stringSetEntry.getKey()).computeIfPresent(grade,(k,v)->++v);
-                                    });
-                        });
+        majorToStudentsMap.forEach((key, value) -> {
+            mapMap.putIfAbsent(key, new HashMap<>());
+            for (int i = 6; i <= 10; i++) {
+                mapMap.get(key).put(i, 0);
+            }
+            majorToStudentsMap.get(key).stream()
+                    .map(Student::getGrades)
+                    .flatMap(Collection::stream)
+                    .forEach(grade -> mapMap.get(key).computeIfPresent(grade, (k, v) -> ++v));
+        });
        mapMap.entrySet().stream()
-               .sorted(Map.Entry.comparingByValue(Comparator.comparing(innerMap->-innerMap.get(10))))//zasto ovde ne moze revesred????
+               .sorted(Map.Entry.comparingByValue(Comparator.comparing(innerMap->-innerMap.get(10))))
                 .map(Map.Entry::getKey)
                 .forEach(key->{
                            pw.println(key);
@@ -85,9 +81,9 @@ class StudentRecords{
     }
 }
 class Student {
-    private String code;
-    private String major;
-    private List<Integer> grades;
+    private final String code;
+    private final String major;
+    private final List<Integer> grades;
     public static final Comparator<Student> STUDENT_COMPARATOR =
             Comparator.comparing(Student::averageGrade)
                     .reversed()

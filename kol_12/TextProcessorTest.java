@@ -85,6 +85,7 @@ public List<Sentence> sentences;
                 ));
         Comparator<Map.Entry<String, Integer>> comparator = Comparator.<Map.Entry<String, Integer>, Integer>comparing(Map.Entry::getValue, ascending ? Comparator.naturalOrder() : Comparator.reverseOrder())
                 .thenComparing(Map.Entry::getKey);
+        //prasaj za ova ^^^
             map.entrySet().stream()
                 .sorted(comparator)
                     .limit(n)
@@ -121,7 +122,7 @@ public List<Sentence> sentences;
 class TextPotter{
     public static List<String>getWords(String text){
         return Arrays.stream(text.split("\\s+"))
-                .map(string -> string.toLowerCase())
+                .map(String::toLowerCase)
                 .collect(Collectors.toList());
     }
     public static String filterText(String s){

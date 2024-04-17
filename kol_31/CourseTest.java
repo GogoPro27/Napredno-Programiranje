@@ -48,9 +48,9 @@ public class CourseTest {
     }
 }
 class Student{
-    private String index;
-    private String name;
-    private Map<String,Integer> activities;
+    private final String index;
+    private final String name;
+    private final Map<String,Integer> activities;
 
     public Student(String index, String name) {
         this.index = index;
@@ -78,7 +78,7 @@ class Student{
             if (activities.get(activity) + points > max) {
                 throw new RuntimeException();
             }
-        activities.compute(activity,(k,v)-> v + points);
+        activities.computeIfPresent(activity,(k,v)-> v + points);
         }
     }
     public double summaryPoints(){
@@ -100,7 +100,7 @@ class Student{
     }
 }
 class AdvancedProgrammingCourse{
-    private Map<String,Student>studentMap;
+    private final Map<String,Student>studentMap;
 
     public AdvancedProgrammingCourse() {
         studentMap = new HashMap<>();

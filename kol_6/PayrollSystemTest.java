@@ -54,23 +54,23 @@ class PayrollSystem{
     public void readEmployees (InputStream is){
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         List<String> lines = br.lines().collect(Collectors.toList());
-        for (int i = 0; i < lines.size(); i++) {
-            String[]parts = lines.get(i).split(";");
+        for (String line : lines) {
+            String[] parts = line.split(";");
 
             String type = parts[0];
-            String id= parts[1];
+            String id = parts[1];
             String level = parts[2];
 
-            if (type.equals("H")){
+            if (type.equals("H")) {
                 float hours = (float) Double.parseDouble(parts[3]);
-                HourlyEmployee newEmployee = new HourlyEmployee(id,level,hours,hourlyRateByLevel.get(level));
-               employees.add(newEmployee);
-            }else {
+                HourlyEmployee newEmployee = new HourlyEmployee(id, level, hours, hourlyRateByLevel.get(level));
+                employees.add(newEmployee);
+            } else {
                 List<Integer> list = Arrays.stream(parts)
                         .skip(3)
                         .map(Integer::parseInt)
                         .collect(Collectors.toList());
-                FreelanceEmployee newEmployee = new FreelanceEmployee(id,level,list,ticketRateByLevel.get(level));
+                FreelanceEmployee newEmployee = new FreelanceEmployee(id, level, list, ticketRateByLevel.get(level));
                 employees.add(newEmployee);
             }
         }

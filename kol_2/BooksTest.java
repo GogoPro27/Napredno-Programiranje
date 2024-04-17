@@ -45,8 +45,12 @@ class Book{
     private final String category;
     private final float price;
 
-    public static final Comparator<Book> COMPARATOR1 = Comparator.comparing(Book::getTitle).thenComparing(Book::getPrice).thenComparing(Book::getCategory);
-    public static final Comparator<Book> COMPARATOR2 = Comparator.comparing(Book::getPrice).thenComparing(Book::getTitle);
+    public static final Comparator<Book> COMPARATOR1 = Comparator.comparing(Book::getTitle)
+            .thenComparing(Book::getPrice)
+            .thenComparing(Book::getCategory);
+    public static final Comparator<Book> COMPARATOR2 = Comparator
+            .comparing(Book::getPrice)
+            .thenComparing(Book::getTitle);
 
     public Book(String title, String category, float price) {
         this.title = title;

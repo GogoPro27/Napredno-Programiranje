@@ -16,7 +16,7 @@ public class OnlinePaymentsTest {
     }
 }
 class OnlinePayments{
-    private Map<String,Student> studentMap;
+    private final Map<String,Student> studentMap;
 
     public OnlinePayments() {
         studentMap = new HashMap<>();

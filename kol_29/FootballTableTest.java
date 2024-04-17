@@ -67,7 +67,7 @@ class Game{
 
 }
 class Team{
-    private String name;
+    private final String name;
     private int playedGames;
     private int wins;
     private int loses;

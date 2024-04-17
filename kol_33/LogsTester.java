@@ -41,9 +41,9 @@ public class LogsTester {
     }
 }
 class LogCollector{
-    private Map<String, List<Log>> serviceLogsMap;
+    private final Map<String, List<Log>> serviceLogsMap;
     //    private Map<String, List<Log>> microServiceLogsMap;
-    private Map<String,Map<String,List<Log>>> microServicesInServices;
+    private final Map<String,Map<String,List<Log>>> microServicesInServices;
 
     public LogCollector() {
         serviceLogsMap = new HashMap<>();

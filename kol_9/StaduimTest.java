@@ -62,7 +62,6 @@ class Sector{
         else if (type==1 && this.type==2) throw new SeatNotAllowedException("SeatNotAllowedException");
         else if (type==2 && this.type==1) throw new SeatNotAllowedException("SeatNotAllowedException");
         isSeatTaken.put(seat,true);
-//        System.out.println(code+";"+seat+";"+type+"-PRODADENO");
         takenSeats++;
     }
 

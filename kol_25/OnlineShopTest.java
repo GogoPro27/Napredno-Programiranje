@@ -88,7 +88,7 @@ class Product {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", createdAt=" + createdAt +
-                ", price=" + String.format("%.2f",price) +
+                ", price=" + price +
                 ", quantitySold=" + soldQuantity +
                 '}';
     }
@@ -127,7 +127,7 @@ private Map<String ,List<Product>> categoryToProductsMap;
             categoryToProductsMap.get(category).stream()
                     .sorted(ComparatorGenerator.productComparator(comparatorType))
                     .forEach(product -> {
-                            if (result.get(0).size()==pageSize){
+                            if (result.get(counter.intValue()).size()==pageSize){
                                 result.add(new ArrayList<>());
                                 counter.getAndIncrement();
                             }

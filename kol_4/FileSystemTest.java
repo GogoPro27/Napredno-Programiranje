@@ -64,6 +64,7 @@ class FileSystem{
     private Map<Character,TreeSet<File>> folderToFiles;
     private Map<Integer,Set<File>>yearToFiles;
     private Map<String,Long> dateToTotalSize;
+    //moze i da se resi so samo prvata mapa , taka sto kje se raboti so groupingBy vo poslednite dva metoda
 
     public FileSystem() {
         folderToFiles = new HashMap<>();

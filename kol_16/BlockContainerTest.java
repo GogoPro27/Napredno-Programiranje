@@ -92,7 +92,7 @@ class BlockContainer<T extends Comparable<T>>{
     @Override
     public String toString() {
         return blocks.values().stream()
-                .map(tBlock -> tBlock.toString())
+                .map(Block::toString)
                 .collect(Collectors.joining(","));
     }
 }
@@ -114,7 +114,7 @@ class Block<T extends Comparable<T>>{
     @Override
     public String toString() {
         return "["+elements.stream()
-                .map(elements->elements.toString())
+                .map(Object::toString)
                 .collect(Collectors.joining(", "))+"]";
     }
 

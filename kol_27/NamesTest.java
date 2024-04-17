@@ -1,9 +1,6 @@
 package SecondPartialExcercises.kol_27;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class NamesTest {
@@ -30,7 +27,7 @@ public class NamesTest {
 
 // vashiot kod ovde
 class Names{
-    private Map<String,Integer> namesMap;
+    private final Map<String,Integer> namesMap;
 
     public Names() {
         namesMap = new TreeMap<>();
@@ -59,8 +56,7 @@ class Names{
                 });
     }
     public String findName(int len, int x){
-        List<String> uniqueNames = namesMap.keySet().stream().collect(Collectors.toList());
-        uniqueNames = uniqueNames.stream().filter(uniqueName->uniqueName.length()<len).collect(Collectors.toList());
+        List<String> uniqueNames = new ArrayList<>(namesMap.keySet().stream().filter(uniqueName->uniqueName.length()<len).collect(Collectors.toList()));
         int i=x;
         if (x>uniqueNames.size()) {
              i = x % uniqueNames.size();

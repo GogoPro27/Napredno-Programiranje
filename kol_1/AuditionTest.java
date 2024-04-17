@@ -28,7 +28,9 @@ class Audition{
     Map<String,TreeSet<Participant>> map;
     Map<String,List<String>> listMap;
 
-    private static final Comparator<Participant> COMPARATOR =Comparator.comparing(Participant::getName).thenComparing(Participant::getAge).thenComparing(p->p.code);
+    private static final Comparator<Participant> COMPARATOR =Comparator.comparing(Participant::getName)
+            .thenComparing(Participant::getAge)
+            .thenComparing(p->p.code);
 
     public Audition() {
         this.map = new HashMap<>();

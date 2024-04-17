@@ -43,6 +43,7 @@ class Canvas{
     }
 
     public void readShapes(InputStream is) throws InvalidDimensionException {
+        //Factory za ova treba realno
        BufferedReader br = new BufferedReader(new InputStreamReader(is));
        List<String> inputs = br.lines().collect(Collectors.toList());
         for (String input : inputs) {

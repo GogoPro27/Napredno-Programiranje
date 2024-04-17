@@ -92,14 +92,20 @@ class CarCollection{
     public void sortByPrice(boolean ascending){
         Comparator<Car> comparator= Comparator.comparing(Car::getPrice);
         if (ascending){
-            cars = cars.stream().sorted(comparator.thenComparing(Car::getPower)).collect(Collectors.toList());
+            cars = cars.stream()
+                    .sorted(comparator.thenComparing(Car::getPower))
+                    .collect(Collectors.toList());
         }else {
-            cars = cars.stream().sorted(comparator.thenComparing(Car::getPower).reversed()).collect(Collectors.toList());
+            cars = cars.stream()
+                    .sorted(comparator.thenComparing(Car::getPower).reversed())
+                    .collect(Collectors.toList());
         }
     }
     public List<Car> filterByManufacturer(String manufacturer){
         Comparator<Car> comparator = Comparator.comparing(Car::getModel);
-        return cars.stream().filter(c->c.getManufacturer().equalsIgnoreCase(manufacturer)).sorted(comparator).collect(Collectors.toList());
+        return cars.stream()
+                .filter(c->c.getManufacturer().equalsIgnoreCase(manufacturer))
+                .sorted(comparator).collect(Collectors.toList());
     }
     public List<Car> getList(){
         return cars;

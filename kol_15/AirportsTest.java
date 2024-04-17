@@ -68,7 +68,7 @@ class Airports{
         Airport curr = codeToAirport.get(from);
         Optional<Flight> opt = curr.getDepartingFlights().stream()
                 .filter(f->f.getTo().equals(to))
-                .peek(f-> System.out.println(f))
+                .peek(System.out::println)
                 .findAny();
         if (opt.isEmpty()){
             System.out.printf("No flights from %s to %s\n",from,to);
@@ -76,10 +76,10 @@ class Airports{
     }
     public void showDirectFlightsTo(String to){
          codeToAirport.values().stream()
-                .map(airport -> airport.getArrivingFlights())
-                 .flatMap(i->i.stream())
+                .map(Airport::getArrivingFlights)
+                 .flatMap(Collection::stream)
                  .filter(flight -> flight.getTo().equals(to))
-                 .forEach(flight -> System.out.println(flight));
+                 .forEach(System.out::println);
 
     }
 }

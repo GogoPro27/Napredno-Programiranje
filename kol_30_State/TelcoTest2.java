@@ -1,4 +1,4 @@
-package SecondPartialExcercises.kol_30;
+package SecondPartialExcercises.kol_30_State;
 
 //package mk.ukim.finki.midterm;
 
@@ -254,7 +254,6 @@ class Call implements State{
     private String uuid;
     private String dialer;
     private String receiver;
-    private long timestampCalled;
     private long timestampStarted;
     private long timestampEnded;
     private long holdTime;
@@ -271,7 +270,6 @@ class Call implements State{
         this.uuid = uuid;
         this.dialer = dialer;
         this.receiver = receiver;
-        this.timestampCalled = timestampCalled;
         state = new CallingInProgressState(this);
         holdTime = 0;
         MISSEDCALL = false;
